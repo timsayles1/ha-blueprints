@@ -59,13 +59,6 @@ action:
       - condition: template
         value_template: '{{ (t_current != t_thermostat) and (t_current  != 0) and (t_thermostat != 0) }}'
       sequence:
-      - service: system_log.write
-        data: 
-          message: >
-            Current thermostat temp is {{ t_thermostat }} and sensor value is {{ t_current }}.
-            Setting current temp to {{ t_current }}.
-          level: info
-          logger: blueprints.tsayles.update_temperature_of_the_thermostat
       - service: climate.set_temperature
         data:
           target_temp_high: {{ target_high_temperature }}
