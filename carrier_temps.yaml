@@ -38,7 +38,6 @@ blueprint:
           step: 0.5
           unit_of_measurement: "°F"
       default: 70
-mode: queued
 
 variables:
   climate_target: !input climate_target
@@ -79,3 +78,4 @@ action:
   - service: climate.set_fan_mode
     data:
       fan_mode: auto
+mode: queued
