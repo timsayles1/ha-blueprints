@@ -1,0 +1,48 @@
+blueprint:
+  name: Update temperature of the thermostat
+  domain: automation
+  input:
+    climate_target:
+      name: Thermostat
+      description: Thermostat to be updated
+      selector:
+        entity:
+          domain: climate
+    t_current_target:
+      name: T_curr
+      description: Current temperature in room.
+      selector:
+        entity:
+          domain: sensor
+mode: queued
+
+variables:
+  climate_target: !input climate_target
+  t_current_target: !input t_current_target
+
+  t_thermostat: "{{float(state_attr(climate_target,'current_temperature') , 0)}}"
+  t_current: "{{float(states[t_current_target].state, 0) }}"
+
+
+trigger:
+  - platform: state
+    entity_id: !input climate_target
+    id: climate
+  - platform: state
+    entity_id: !input t_current_target
+    id: temperature
+
+condition: []
+
+action:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ (t_current != t_thermostat) and (t_current  != 0) and (t_thermostat != 0) }}'
+      sequence:
+      - service: python_script.thermostat_update
+        data_template:
+          temp_only: true
+          thermostat: !input climate_target
+          sensor: !input t_current_target
+    default: []
