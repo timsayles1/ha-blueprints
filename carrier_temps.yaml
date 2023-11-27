@@ -62,7 +62,6 @@ action:
       - service: system_log.write
         data: 
           message: >
-            Setting high temp to {{ target_high_temperature }} and low temp to {{ target_low_temperature }} 
             Current thermostat temp is {{ t_thermostat }} and sensor value is {{ t_current }}.
             Setting current temp to {{ t_current }}.
           level: info
