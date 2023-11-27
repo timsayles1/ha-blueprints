@@ -59,19 +59,19 @@ else:
                 logger.error("Expected %s entity_id, got: %s.", ATTR_SENSOR, sensor_id)
         if not temp_only:
             state = [hvac_state][0]
-            attributes[ATTR_FAN_MODE] = [fan_state]
+            attributes[ATTR_FAN_MODE] = [fan_state][0]
         if temp_only:
             state = [hvac_state][0]
-            attributes[ATTR_FAN_MODE] = [fan_state]
-            if state == 'heat_cool':   
+            attributes[ATTR_FAN_MODE] = [fan_state][0]
+            if [hvac_state][0] == "heat_cool":   
                 attributes[ATTR_HIGH] = high_temp
                 attributes[ATTR_LOW] = low_temp
                 attributes[ATTR_TEMPERATURE] = None
-                logger.info("Temps: High %s Low %s", high_temp, low_temp)
+                logger.info("HVAC State: %s Temps: High %s Low %s", [hvac_state][0], high_temp, low_temp)
             else:
                 attributes[ATTR_TEMPERATURE] = target_temp
                 attributes[ATTR_HIGH] = None
                 attributes[ATTR_LOW] = None
-                logger.info("Temps: Target %s", target_temp)
+                logger.info("HVAC State: %s Temps: Target %s", [hvac_state][0], target_temp)
         
         hass.states.set(thermostat_id, state, attributes)
