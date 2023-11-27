@@ -9,13 +9,13 @@ blueprint:
   domain: automation
   input:
     climate_source:
-      name: Source Thermostat
-      description: Climate entity which will send the temperature update
+      name: Temperature Source
+      description: Climate/sensor entity which will send the temperature update
       selector:
         entity:
-          domain: climate
+          domain: sensor
     climate_target:
-      name: Target Radiators
+      name: Target Thermostat
       description: Climate target which will get the temperature update
       selector:
         entity:
