@@ -63,8 +63,8 @@ action:
         data: 
           message: >
             Setting high temp to {{ target_high_temperature }} and low temp to {{ target_low_temperature }} 
-            on !input climate_target. Current thermostat temp is {{ t_thermostat }} and sensor value is {{ t_current }}.
-            Setting !input climate_target current temp to {{ t_current }}.
+            Current thermostat temp is {{ t_thermostat }} and sensor value is {{ t_current }}.
+            Setting current temp to {{ t_current }}.
           level: info
           logger: blueprints.tsayles.update_temperature_of_the_thermostat
       - service: climate.set_temperature
