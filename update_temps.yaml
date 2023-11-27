@@ -7,42 +7,66 @@ blueprint:
       description: Thermostat to be updated
       selector:
         entity:
-          domain: climate
+          domain:
+          - climate
+          multiple: false
     t_current_target:
       name: T_curr
-      description: Current temperature in room.
+      description: Current temperature in room
       selector:
         entity:
-          domain: sensor
+          domain:
+          - sensor
+          multiple: false
+    target_high_temp:
+      name: T_high
+      description: Target high temperature of the thermostat
+      selector:
+        number:
+          min: 0
+          max: 100
+          step: 0.5
+          unit_of_measurement: "°F"
+      default: 73
+    target_low_temp:
+      name: T_low
+      description: Target low temperature of the thermostat
+      selector:
+        number:
+          min: 0
+          max: 100
+          step: 0.5
+          unit_of_measurement: "°F"
+      default: 70
+  source_url: https://raw.githubusercontent.com/timsayles1/ha-blueprints/main/update_temps.yaml
 mode: queued
-
 variables:
   climate_target: !input climate_target
   t_current_target: !input t_current_target
-
-  t_thermostat: "{{float(state_attr(climate_target,'current_temperature') , 0)}}"
-  t_current: "{{float(states[t_current_target].state, 0) }}"
-
-
+  t_thermostat: '{{float(state_attr(climate_target,''current_temperature'') , 0)}}'
+  t_current: '{{float(states[t_current_target].state, 0) }}'
+  target_low_temp: !input target_low_temp
+  target_high_temp: !input target_high_temp
 trigger:
-  - platform: state
-    entity_id: !input climate_target
-    id: climate
-  - platform: state
-    entity_id: !input t_current_target
-    id: temperature
-
+- platform: state
+  entity_id: !input climate_target
+  id: climate
+- platform: state
+  entity_id: !input t_current_target
+  id: temperature
 condition: []
-
 action:
-  - choose:
-    - conditions:
-      - condition: template
-        value_template: '{{ (t_current != t_thermostat) and (t_current  != 0) and (t_thermostat != 0) }}'
-      sequence:
-      - service: python_script.thermostat_update
-        data_template:
-          temp_only: true
-          thermostat: !input climate_target
-          sensor: !input t_current_target
-    default: []
+- choose:
+  - conditions:
+    - condition: template
+      value_template: '{{ (t_current != t_thermostat) and (t_current  != 0) and (t_thermostat
+        != 0) }}'
+    sequence:
+    - service: python_script.thermostat_update
+      data_template:
+        temp_only: true
+        thermostat: !input climate_target
+        sensor: !input t_current_target
+        target_temp_high: !input target_high_temp
+        target_temp_low: !input target_low_temp
+  default: []
