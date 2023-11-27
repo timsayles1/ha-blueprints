@@ -1,8 +1,5 @@
 blueprint:
   name: Update temperature of the thermostat
-  description: >
-    Sets target temperature depending on secondary temperature sensor. Group multiple temperature sensors in a helper group and set
-    device_class to temerature. Climate device will be set to auto or heat/cool mode.
   domain: automation
   input:
     climate_target:
@@ -38,6 +35,7 @@ blueprint:
           step: 0.5
           unit_of_measurement: "°F"
       default: 70
+mode: queued
 
 variables:
   climate_target: !input climate_target
@@ -54,19 +52,23 @@ trigger:
   - platform: state
     entity_id: !input t_current_target
     id: temperature
-condition: "{{ (t_current != t_thermostat) and (t_current  != 0) and (t_thermostat != 0) }}"
+
 action:
-  - service: system_log.write
-    data: 
-      message: >
-        Setting high temp to {{ target_high_temperature }} and low temp to {{ target_low_temperature }} 
-        on {{ climate_target }}. Current thermostat temp is {{ t_thermostat }} and sensor value is {{ t_current }}.
-        Setting {{ climate_target }} current temp to {{ t_current }}.
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ (t_current != t_thermostat) and (t_current  != 0) and (t_thermostat != 0) }}'
+      sequence:
+      - service: system_log.write
+        data: 
+          message: >
+          Setting high temp to {{ target_high_temperature }} and low temp to {{ target_low_temperature }} 
+          on {{ climate_target }}. Current thermostat temp is {{ t_thermostat }} and sensor value is {{ t_current }}.
+          Setting {{ climate_target }} current temp to {{ t_current }}.
         level: info
         logger: blueprints.tsayles.update_temperature_of_the_thermostat
-  - service: climate.set_temperature
-    data:
-      target_temp_high: {{ target_high_temperature }}
-      target_temp_low: {{ target_low_temperature }}
-      entity_id: !input climate_target
-mode: queued
+      - service: climate.set_temperature
+        data:
+          target_temp_high: {{ target_high_temperature }}
+          target_temp_low: {{ target_low_temperature }}
+          entity_id: !input climate_target
