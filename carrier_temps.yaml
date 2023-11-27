@@ -57,23 +57,23 @@ trigger:
     entity_id: !input t_current_target
     id: temperature
 
-condition: []
+condition: '{{ (t_current != t_thermostat) and (t_current  != 0) and (t_thermostat != 0) }}'
 
 action:
-  - choose:
-    - conditions:
-      - condition: template
-        value_template: '{{ (t_current != t_thermostat) and (t_current  != 0) and (t_thermostat != 0) }}'
-      sequence:
-        service: climate.set_temperature
-          data:
-            target_temp_high: {{ target_high_temperature }}
-            target_temp_low: {{ target_low_temperature }}
-            current_temperature: {{ t_current }}
-            hvac_mode: 'heat_cool'
-          target:
-            entity_id: !input climate_target
-        service: climate.set_fan_mode
-          data:
-            fan_mode: 'auto'
-    default: []
+  - service: system_log.write
+    data: 
+      message: >
+        Setting high temp to {{ target_high_temperature }} and low temp to {{ target_low_temperature }} 
+        on {{ climate_target }}. Current thermostat temp is {{ t_thermostat }} and sensor value is {{ t_current }}.
+        Setting {{ climate_target }} current temp to {{ t_current }}.
+  - service: climate.set_temperature
+    data:
+      target_temp_high: {{ target_high_temperature }}
+      target_temp_low: {{ target_low_temperature }}
+      current_temperature: {{ t_current }}
+      hvac_mode: 'heat_cool'
+    target:
+      entity_id: !input climate_target
+  - service: climate.set_fan_mode
+    data:
+      fan_mode: 'auto'
