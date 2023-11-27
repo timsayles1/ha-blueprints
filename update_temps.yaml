@@ -27,6 +27,7 @@ blueprint:
             - label: "off"
               value: "off"
           mode: dropdown
+          multiple: false
     fan_mode:
       name: Thermostat Fan Mode
       description: Fan mode setting for thermostat
@@ -42,6 +43,7 @@ blueprint:
             - label: high
               value: high
           mode: dropdown
+          multiple: false
     t_current_target:
       name: Temperature Sensor
       description: Temperature sensor or sensor group
