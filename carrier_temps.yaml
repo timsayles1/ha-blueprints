@@ -67,12 +67,13 @@ action:
       sequence:
         service: climate.set_temperature
           data:
-            target_temp_high: !input target_high_temperature
-            target_temp_low: !input target_low_temperature
-            hvac_mode: heat_cool
+            target_temp_high: {{ target_high_temperature }}
+            target_temp_low: {{ target_low_temperature }}
+            current_temperature: {{ t_current }}
+            hvac_mode: 'heat_cool'
           target:
             entity_id: !input climate_target
         service: climate.set_fan_mode
           data:
-            fan_mode: auto
+            fan_mode: 'auto'
     default: []
