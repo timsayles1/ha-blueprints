@@ -10,6 +10,29 @@ blueprint:
           domain:
           - climate
           multiple: false
+    climate_mode:
+      name: Thermostat Mode
+      description: Mode setting for thermostat
+      select:
+        mode: dropdown
+        options:
+          - heat_cool
+          - heat
+          - cool
+          - fan_only
+          - off
+        multiple: false  
+    fan_mode:
+      name: Thermostat Fan Mode
+      description: Fan ode setting for thermostat
+      select:
+        mode: dropdown
+        options:
+          - auto
+          - low
+          - medium
+          - high
+        multiple: false
     t_current_target:
       name: T_curr
       description: Current temperature in room
@@ -45,6 +68,8 @@ variables:
   t_current_target: !input t_current_target
   t_thermostat: '{{float(state_attr(climate_target,''current_temperature'') , 0)}}'
   t_current: '{{float(states[t_current_target].state, 0) }}'
+  target_mode: !input climate_mode
+  target_fan: !input fan_mode
   target_low_temp: !input target_low_temp
   target_high_temp: !input target_high_temp
 trigger:
