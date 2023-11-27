@@ -63,12 +63,10 @@ action:
         on {{ climate_target }}. Current thermostat temp is {{ t_thermostat }} and sensor value is {{ t_current }}.
         Setting {{ climate_target }} current temp to {{ t_current }}.
         level: info
-        logger: blueprints.nevesenin.target_temperature_adjustment_with_additional_thermostat
+        logger: blueprints.tsayles.update_temperature_of_the_thermostat
   - service: climate.set_temperature
     data:
       target_temp_high: {{ target_high_temperature }}
       target_temp_low: {{ target_low_temperature }}
-      current_temperature: {{ t_current }}
-      hvac_mode: heat_cool
       entity_id: !input climate_target
 mode: queued
