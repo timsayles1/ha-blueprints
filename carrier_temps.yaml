@@ -57,7 +57,7 @@ trigger:
     entity_id: !input t_current_target
     id: temperature
 
-condition: '{{ (t_current != t_thermostat) and (t_current  != 0) and (t_thermostat != 0) }}'
+condition: "{{ (t_current != t_thermostat) and (t_current  != 0) and (t_thermostat != 0) }}"
 
 action:
   - service: system_log.write
@@ -66,14 +66,16 @@ action:
         Setting high temp to {{ target_high_temperature }} and low temp to {{ target_low_temperature }} 
         on {{ climate_target }}. Current thermostat temp is {{ t_thermostat }} and sensor value is {{ t_current }}.
         Setting {{ climate_target }} current temp to {{ t_current }}.
+        level: info
+        logger: blueprints.nevesenin.target_temperature_adjustment_with_additional_thermostat
   - service: climate.set_temperature
     data:
       target_temp_high: {{ target_high_temperature }}
       target_temp_low: {{ target_low_temperature }}
       current_temperature: {{ t_current }}
-      hvac_mode: 'heat_cool'
+      hvac_mode: "heat_cool"
     target:
       entity_id: !input climate_target
   - service: climate.set_fan_mode
     data:
-      fan_mode: 'auto'
+      fan_mode: "auto"
