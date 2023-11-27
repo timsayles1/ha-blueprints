@@ -9,8 +9,8 @@ ATTR_TEMPERATURE = "temperature"
 ATTR_HIGH = "target_temp_high"
 ATTR_LOW = "target_temp_low"
 
-ATTR_HVAC_MODE_DEFAULT = "heat_cool"
-ATTR_FAN_MODE_DEFAULT = "auto"
+ATTR_HVAC_MODE_DEFAULT = ["heat_cool"]
+ATTR_FAN_MODE_DEFAULT = ["auto"]
 ATTR_HIGH_DEFAULT = 73
 ATTR_LOW_DEFAULT = 70
 ATTR_TEMP_DEFAULT = 70
@@ -58,12 +58,12 @@ else:
             else:
                 logger.error("Expected %s entity_id, got: %s.", ATTR_SENSOR, sensor_id)
         if not temp_only:
-            state = [hvac_state]
+            state = [hvac_state][0]
             attributes[ATTR_FAN_MODE] = [fan_state]
         if temp_only:
-            state = [hvac_state]
+            state = [hvac_state][0]
             attributes[ATTR_FAN_MODE] = [fan_state]
-            if hvac_state == 'heat_cool':   
+            if state == 'heat_cool':   
                 attributes[ATTR_HIGH] = high_temp
                 attributes[ATTR_LOW] = low_temp
                 attributes[ATTR_TEMPERATURE] = None
