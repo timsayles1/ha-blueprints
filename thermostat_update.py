@@ -40,6 +40,10 @@ high_temp = float(data.get(ATTR_HIGH, ATTR_HIGH_DEFAULT))
 low_temp = float(data.get(ATTR_LOW, ATTR_LOW_DEFAULT))
 state_only = data.get(ATTR_STATE_ONLY, ATTR_STATE_ONLY_DEFAULT)
 temp_only = data.get(ATTR_TEMP_ONLY, ATTR_TEMP_ONLY_DEFAULT)
+logger.info("Command state %s temp %s", state_only, temp_only)
+logger.info("Thermostat %s state %s", thermostat_id, hvac_state)
+logger.info("Fan state %s", fan_state)
+logger.info("Temps: High %s Low %s", high_temp, low_temp)
 if state_only and temp_only:
     logger.error("You can't use state_only and temp_only at the same time! Ignoring.")
     state_only = False
@@ -65,6 +69,7 @@ else:
                     logger.error("Could not get state of %s.", sensor_id)
                 else:
                     attributes[ATTR_CURRENT_TEMP] = temp
+                    logger.info("Set temp to %s from %s", temp, sensor_id)
             else:
                 logger.error("Expected %s entity_id, got: %s.", ATTR_SENSOR, sensor_id)
         if not temp_only:
