@@ -56,7 +56,7 @@ trigger:
     entity_id: !input t_current_target
     id: temperature
 
-condition: "{{ (t_current != t_thermostat) and (t_current  != 0) and (t_thermostat != 0) }}"
+
 
 action:
   - service: system_log.write
