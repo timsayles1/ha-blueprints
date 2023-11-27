@@ -1,19 +1,3 @@
-"""
-This script updates the Carrier Infinity state and current
-temperature from external sensor.
-Arguments:
- - thermostat			      - thermostat entity_id (required)
- - sensor				        - sensor entity_id (required)
- - state_only           - with state_only set to 'true' script will update only state
-                          of the thermostat (optional)
- - temp_only            - with temp_only set to 'true' script will update only
-                          current_temperature of the thermostat (optional)
-
-Configuration example:
-
-service: python_script.thermostat_update
-
-"""
 ATTR_THERMOSTAT = "thermostat"
 ATTR_SENSOR = "sensor"
 ATTR_STATE_ONLY = "state_only"
@@ -74,18 +58,20 @@ else:
             else:
                 logger.error("Expected %s entity_id, got: %s.", ATTR_SENSOR, sensor_id)
         if not temp_only:
-            attributes[ATTR_HVAC_MODE] = [hvac_state]
+            state = [hvac_state]
             attributes[ATTR_FAN_MODE] = [fan_state]
         if temp_only:
-            state = hass.states.get(thermostat_id).state
-            attributes[ATTR_HVAC_MODE] = [hvac_state]
+            state = [hvac_state]
             attributes[ATTR_FAN_MODE] = [fan_state]
             if hvac_state == 'heat_cool':   
                 attributes[ATTR_HIGH] = high_temp
                 attributes[ATTR_LOW] = low_temp
+                attributes[ATTR_TEMPERATURE] = None
                 logger.info("Temps: High %s Low %s", high_temp, low_temp)
             else:
                 attributes[ATTR_TEMPERATURE] = target_temp
+                attributes[ATTR_HIGH] = None
+                attributes[ATTR_LOW] = None
                 logger.info("Temps: Target %s", target_temp)
         
         hass.states.set(thermostat_id, state, attributes)
