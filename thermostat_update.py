@@ -32,29 +32,36 @@ else:
     else:
         attributes = thermostat.attributes.copy()
         if sensor_id:
-           temp = float(hass.states.get(sensor_id).state)
-             if temp is None:
-               logger.error("Could not get state of %s.", sensor_id)
-             else:
-               attributes[ATTR_CURRENT_TEMP] = temp
-               logger.info("Set temp to %s from %s", temp, sensor_id)
-                if [hvac_state][0] == "heat_cool":   
-                    attributes[ATTR_HIGH] = high_temp
-                    attributes[ATTR_LOW] = low_temp
-                    attributes[ATTR_TEMPERATURE] = None
-                    logger.info("HVAC State: %s Temps: High %s Low %s", [hvac_state][0], high_temp, low_temp)
-                else:
-                      attributes[ATTR_TEMPERATURE] = target_temp
-                      attributes[ATTR_HIGH] = None
-                      attributes[ATTR_LOW] = None
-                      logger.info("HVAC State: %s Temps: Target %s", [hvac_state][0], target_temp)  
-             else:
-             logger.error("Expected %s entity_id, got: %s.", ATTR_SENSOR, sensor_id)
-             state = [hvac_state][0]
-             attributes[ATTR_FAN_MODE] = [fan_state][0]
-             attributes["hold_activity"] = manual
-             attributes["hold_state"] = "on"
-             attributes["current_activity"] = manual
-             attributes["preset_mode"] = Hold
-        
+            temp = float(hass.states.get(sensor_id).state)
+        else:
+            logger.error("Expected %s entity_id, got: %s.", ATTR_SENSOR, sensor_id)
+        if temp is None:
+            logger.error("Could not get state of %s.", sensor_id)
+        else:
+            attributes[ATTR_CURRENT_TEMP] = temp
+            logger.info("Set temp to %s from %s", temp, sensor_id)
+            if [hvac_state][0] == "heat_cool":
+                attributes[ATTR_HIGH] = high_temp
+                attributes[ATTR_LOW] = low_temp
+                attributes[ATTR_TARGET] = None
+                logger.info(
+                    "HVAC State: %s Temps: High %s Low %s",
+                    [hvac_state][0],
+                    high_temp,
+                    low_temp,
+                )
+            else:
+                attributes[ATTR_TARGET] = target_temp
+                attributes[ATTR_HIGH] = None
+                attributes[ATTR_LOW] = None
+                logger.info(
+                    "HVAC State: %s Temps: Target %s", [hvac_state][0], target_temp
+                )
+
+        state = [hvac_state][0]
+        attributes[ATTR_FAN_MODE] = [fan_state][0]
+        attributes["hold_activity"] = manual
+        attributes["hold_state"] = "on"
+        attributes["current_activity"] = manual
+        attributes["preset_mode"] = Hold
         hass.states.set(thermostat_id, state, attributes)
