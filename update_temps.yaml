@@ -1,5 +1,5 @@
 blueprint:
-  name: Update temperature of the thermostat
+  name: Update Carrier Infinity via Infinitude
   domain: automation
   input:
     climate_target:
