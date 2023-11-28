@@ -46,7 +46,7 @@ else:
         else:
             attributes[ATTR_CURRENT_TEMP] = temp
             logger.info("Set temp to %s from %s", temp, sensor_id)
-            if ([hvac_state][0] == "heat_cool" || [hvac_state][0] == "auto"):
+            if [hvac_state][0] == "heat_cool":
                 attributes[ATTR_HIGH] = high_temp
                 attributes[ATTR_LOW] = low_temp
                 attributes[ATTR_TARGET] = None
