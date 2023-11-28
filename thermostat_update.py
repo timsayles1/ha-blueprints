@@ -1,4 +1,4 @@
-ATTR_THERMOSTAT = "thermostat"
+tATTR_THERMOSTAT = "thermostat"
 ATTR_SENSOR = "sensor"
 ATTR_CURRENT_TEMP = "current_temperature"
 ATTR_HVAC_MODE = "hvac_mode"
@@ -7,8 +7,8 @@ ATTR_TARGET = "temperature"
 ATTR_HIGH = "target_temp_high"
 ATTR_LOW = "target_temp_low"
 
-ATTR_HVAC_MODE_DEFAULT = ["auto"]
-ATTR_FAN_MODE_DEFAULT = ["off"]
+ATTR_HVAC_MODE_DEFAULT = ["heat_cool"]
+ATTR_FAN_MODE_DEFAULT = ["auto"]
 ATTR_HIGH_DEFAULT = 73
 ATTR_LOW_DEFAULT = 70
 ATTR_TEMP_DEFAULT = 70
