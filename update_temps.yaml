@@ -17,13 +17,13 @@ blueprint:
         select:
           options:
             - label: heat/cool
-              value: heat_cool
+              value: auto
             - label: heat
               value: heat
             - label: cool
               value: cool
             - label: fan only
-              value: fan_only
+              value: fanonly
             - label: "off"
               value: "off"
           mode: dropdown
@@ -35,11 +35,11 @@ blueprint:
         select:
           options:
             - label: auto
-              value: auto
+              value: "off"
             - label: low
               value: low
             - label: medium
-              value: medium
+              value: med
             - label: high
               value: high
           mode: dropdown
@@ -111,7 +111,8 @@ action:
     sequence:
     - service: python_script.thermostat_update
       data_template:
-        temp_only: true
+        thermomode: 4
+        thermozone: 0
         thermostat: !input climate_target
         sensor: !input t_current_target
         target_temp_high: !input target_high_temp
