@@ -60,8 +60,8 @@ else:
 
         state = [hvac_state][0]
         attributes[ATTR_FAN_MODE] = [fan_state][0]
-        attributes["hold_activity"] = manual
+        attributes["hold_activity"] = "manual"
         attributes["hold_state"] = "on"
-        attributes["current_activity"] = manual
-        attributes["preset_mode"] = Hold
+        attributes["current_activity"] = "manual"
+        attributes["preset_mode"] = "Hold"
         hass.states.set(thermostat_id, state, attributes)
