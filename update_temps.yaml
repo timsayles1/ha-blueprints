@@ -118,6 +118,6 @@ action:
         target_temp_high: !input target_high_temp
         target_temp_low: !input target_low_temp
         temperature: !input target_temp
-        hvac_modes: !input climate_mode
+        hvac_mode: !input climate_mode
         fan_mode: !input fan_mode
   default: []
