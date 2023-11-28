@@ -12,6 +12,9 @@ ATTR_FAN_MODE_DEFAULT = ["off"]
 ATTR_HIGH_DEFAULT = 73
 ATTR_LOW_DEFAULT = 70
 ATTR_TEMP_DEFAULT = 70
+ATTR_THERM_MODE = "manual"
+ATTR_HOLD_STATE_TOGGLE = "on"
+ATTR_HOLD_STATE = "Hold"
 
 thermostat_id = data.get(ATTR_THERMOSTAT)
 sensor_id = data.get(ATTR_SENSOR)
@@ -20,6 +23,9 @@ fan_state = data.get(ATTR_FAN_MODE, ATTR_FAN_MODE_DEFAULT)
 high_temp = float(data.get(ATTR_HIGH, ATTR_HIGH_DEFAULT))
 low_temp = float(data.get(ATTR_LOW, ATTR_LOW_DEFAULT))
 target_temp = float(data.get(ATTR_TARGET, ATTR_TEMP_DEFAULT))
+therm_mode = data.get(ATTR_THERM_MODE)
+hold_state = data.get(ATTR_HOLD_STATE)
+hold_state_toggle = data.get(ATTR_HOLD_STATE_TOGGLE)
 logger.info("Thermostat %s state %s", thermostat_id, hvac_state)
 logger.info("Fan state %s", fan_state)
 temp = None
@@ -40,7 +46,7 @@ else:
         else:
             attributes[ATTR_CURRENT_TEMP] = temp
             logger.info("Set temp to %s from %s", temp, sensor_id)
-            if [hvac_state][0] == "heat_cool":
+            if ([hvac_state][0] == "heat_cool" || [hvac_state][0] == "auto"):
                 attributes[ATTR_HIGH] = high_temp
                 attributes[ATTR_LOW] = low_temp
                 attributes[ATTR_TARGET] = None
@@ -60,8 +66,4 @@ else:
 
         state = [hvac_state][0]
         attributes[ATTR_FAN_MODE] = [fan_state][0]
-        attributes["hold_activity"] = "manual"
-        attributes["hold_state"] = "on"
-        attributes["current_activity"] = "manual"
-        attributes["preset_mode"] = "Hold"
         hass.states.set(thermostat_id, state, attributes)
