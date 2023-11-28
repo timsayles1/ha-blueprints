@@ -16,14 +16,14 @@ blueprint:
       selector:
         select:
           options:
-            - label: heat/cool
-              value: auto
+            - label: auto
+              value: heat_cool
             - label: heat
               value: heat
             - label: cool
               value: cool
             - label: fan only
-              value: fanonly
+              value: fan_only
             - label: "off"
               value: "off"
           mode: dropdown
@@ -34,8 +34,8 @@ blueprint:
       selector:
         select:
           options:
-            - label: auto
-              value: "off"
+            - label: auto/off
+              value: auto
             - label: low
               value: low
             - label: medium
