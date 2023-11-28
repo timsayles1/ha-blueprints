@@ -32,10 +32,7 @@ else:
     else:
         attributes = thermostat.attributes.copy()
         if sensor_id:
-           try:
-             temp = float(hass.states.get(sensor_id).state)
-             except (ValueError, TypeError):
-               logger.error("Could not get state of %s", sensor_id)
+           temp = float(hass.states.get(sensor_id).state)
              if temp is None:
                logger.error("Could not get state of %s.", sensor_id)
              else:
