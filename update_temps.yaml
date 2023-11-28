@@ -51,6 +51,8 @@ blueprint:
         entity:
           domain:
           - sensor
+          device_class: 
+          - temperature
           multiple: false
     target_high_temp:
       name: Thermostat High Target Temp
