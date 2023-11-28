@@ -113,8 +113,6 @@ action:
     sequence:
     - service: python_script.thermostat_update
       data_template:
-        thermomode: 4
-        thermozone: 0
         thermostat: !input climate_target
         sensor: !input t_current_target
         target_temp_high: !input target_high_temp
